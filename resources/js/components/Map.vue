@@ -7,37 +7,39 @@
         :options="{zoomControl: false}"
         >
         <l-control position="topleft" >
-            <!-- <i class="fa fa-bars"  > </i> -->
-            <button class="btn btn-sm btn-success" @click="$emit('side-bar',!active)"> <i class="fa fa-bars"  @click="$emit('side-bar',!active)"> </i> View Stats By States</button>
+            <!-- <i class="fa fa-bars"  > </i> -->            
             <div class="statShow">
-                <div class="row" style="align-items: center;margin : 0 auto;" v-if="!statsLoader">
+                <div class="row" style="align-items: center;margin-top:30px" v-if="!statsLoader">
                     <div class="text-center" v-on:click="launchModal()">
-                    <div class="card m_block" v-bind:class="{ 'all_border': mode == 'all' }">
-                        <strong class="c_number">81</strong>
-                        <span class="c_title">Total Cases</span>
-                    </div>
-                    </div>
-                    <div class="text-center">
-                    <div class="card m_block">
-                        <strong class="c_number">6</strong>
-                        <span class="c_title">Active</span>
-                    </div>
+                        <div class="card m_block" v-bind:class="{ 'all_border': mode == 'all' }">
+                            <strong class="c_number">81</strong>
+                            <span class="c_title">Total Cases</span>
+                        </div>
                     </div>
                     <div class="text-center">
-                    <div class="card m_block">
-                        <strong class="c_number">6</strong>
-                        <span class="c_title">Deaths</span>
-                    </div>
+                        <div class="card m_block">
+                            <strong class="c_number">6</strong>
+                            <span class="c_title">Active</span>
+                        </div>
                     </div>
                     <div class="text-center">
-                    <div class="card m_block">
-                        <strong class="c_number">1</strong>
-                        <span class="c_title">Discharged</span>
+                        <div class="card m_block">
+                            <strong class="c_number">6</strong>
+                            <span class="c_title">Deaths</span>
+                        </div>
                     </div>
+                    <div class="text-center">
+                        <div class="card m_block">
+                            <strong class="c_number">1</strong>
+                            <span class="c_title">Discharged</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </l-control>
+         <l-control position="topright" >
+             <button class="btn btn-sm btn-miner btn-success" @click="$emit('side-bar',!active)" style="font-size:12px;"> <i class="fa fa-bars"  @click="$emit('side-bar',!active)"> </i>Stats By States</button>
+         </l-control>
         <l-control-zoom position="bottomright"  ></l-control-zoom>
         <l-tile-layer :url="url"></l-tile-layer>
         <l-geo-json :geojson="geojson" :options-style="styleFunction" ></l-geo-json>              

@@ -37,8 +37,9 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div>
-     <vs-sidebar parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="active">
+     <vs-sidebar parent="body" default-index="1"  color="primary" class="sidebarx"  spacer v-model="active">
        <div style="padding:0">
+         <!-- <button class="btn btn-sm" @click="closeMenu()"><i class="fa fa-close"></i> Close</button> -->
         <sidebar-component></sidebar-component>
       </div>
      </vs-sidebar>
@@ -47,6 +48,13 @@
 <script>
 import { LMap, LTileLayer ,LGeoJson,  LMarker, LPopup,LIcon,LCircle,LControlZoom, LControl} from "vue2-leaflet";
 import { latLng, icon } from "leaflet";
+function getDefaultData() {
+    return {
+      zoom: 6.4,
+      mobileZoom: 5,
+      active : false,
+    }
+}
 export default {
   name : 'example-component',
   components: {
@@ -60,18 +68,16 @@ export default {
     LControlZoom,
     LControl,
   },
-  data() {
-    return {
-      zoom: 6.4,
-      mobileZoom: 5,
-      active : false,
-    };
-  },
+  data : getDefaultData,
   methods: {
     async initMap(){      
     },
     sideAction(action){
       this.active = action;      
+    },
+    closeMenu(){
+      this.active = false;
+      Object.assign(this.$data, this.$options.data.apply(this))
     }
   }
   ,
@@ -196,7 +202,7 @@ export default {
 #mapx{
   height: 100vh;
 }
-.fa-bars{
+/* .fa-bars{
   font-size: 20px;
-}
+} */
 </style>
