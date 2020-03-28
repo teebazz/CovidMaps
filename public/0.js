@@ -152,7 +152,70 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
+ // import {Map} from './Map'
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'example-component',
@@ -163,14 +226,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     LMarker: vue2_leaflet__WEBPACK_IMPORTED_MODULE_1__["LMarker"],
     LPopup: vue2_leaflet__WEBPACK_IMPORTED_MODULE_1__["LPopup"],
     LIcon: vue2_leaflet__WEBPACK_IMPORTED_MODULE_1__["LIcon"],
-    LCircle: vue2_leaflet__WEBPACK_IMPORTED_MODULE_1__["LCircle"]
+    LCircle: vue2_leaflet__WEBPACK_IMPORTED_MODULE_1__["LCircle"],
+    LControlZoom: vue2_leaflet__WEBPACK_IMPORTED_MODULE_1__["LControlZoom"],
+    LControl: vue2_leaflet__WEBPACK_IMPORTED_MODULE_1__["LControl"],
+    Map: Map
   },
   data: function data() {
     return {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       zoom: 6.4,
+      mobileZoom: 5,
       center: [9.0820, 8.6753],
       caseLoader: true,
+      active: false,
       stateLoader: true,
       statsLoader: true,
       statesList: null,
@@ -433,7 +501,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.sidebar[data-v-299e239e]{\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: center;\n  height: 100%;\n  max-height: 60vh;\n  overflow-x: hidden;\n  overflow-y: auto;\n  padding-top: 20px;\n}\n.imgClass[data-v-299e239e]{\n    width: 50%;\n    height: 50%;\n    -o-object-fit: scale-down;\n    object-fit: scale-down;\n}\n.numbers[data-v-299e239e]{\n  font-weight: 900;\n  font-size: 18px;\n  color:red;\n  /* text-align:left !important ; */\n}\n.c_title[data-v-299e239e]{\n  font-size: 10px;\n  font-weight: 600;\n}\n.c_number[data-v-299e239e]{\n  font-size: 25px;\n  font-weight: 700;\n}\n.m_block[data-v-299e239e]{\n  padding: 10px;\n  border-radius: 15px;\n  margin: 5px;\n}\n.sidT[data-v-299e239e]{\n  padding-left:5px ;\n  padding-right:5px ;\n}\n.all_border[data-v-299e239e]{\n  border: 1px solid red;\n}\n#mapx[data-v-299e239e]{\n  height: 100vh\n}\n", ""]);
+exports.push([module.i, "\n@media screen and (max-width: 726px) {\n#main-sidebar[data-v-299e239e]{\n    display: none;\n}\n.imgClass[data-v-299e239e]{\n    width: 20%;\n    height: 20%;\n    -o-object-fit: scale-down;\n    object-fit: scale-down;\n}\n.mapMobile[data-v-299e239e]{\n    display: block;\n}\n.mapWeb[data-v-299e239e]{\n    display: none;\n}\n}\n@media screen and (min-width: 727px) {\n.imgClass[data-v-299e239e]{\n    width: 50%;\n    height: 50%;\n    -o-object-fit: scale-down;\n    object-fit: scale-down;\n}\n.mapMobile[data-v-299e239e]{\n    display: none;\n}\n}\n.sidebar[data-v-299e239e]{\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: center;\n  height: 100%;\n  max-height: 60vh;\n  overflow-x: hidden;\n  overflow-y: auto;\n  padding-top: 20px;\n}\n.numbers[data-v-299e239e]{\n  font-weight: 900;\n  font-size: 18px;\n  color:red;\n  /* text-align:left !important ; */\n}\n.c_title[data-v-299e239e]{\n  font-size: 10px;\n  font-weight: 600;\n}\n.c_number[data-v-299e239e]{\n  font-size: 25px;\n  font-weight: 700;\n}\n.m_block[data-v-299e239e]{\n  padding: 10px;\n  border-radius: 15px;\n  margin: 5px;\n}\n.sidT[data-v-299e239e]{\n  padding-left:5px ;\n  padding-right:5px ;\n}\n.all_border[data-v-299e239e]{\n  border: 1px solid red;\n}\n#mapx[data-v-299e239e]{\n  height: 100vh;\n}\n.fa-bars[data-v-299e239e]{\n  font-size: 20px;\n}\n", ""]);
 
 // exports
 
@@ -485,217 +553,545 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container-fluid" }, [
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-10", staticStyle: { padding: "0" } }, [
-        _c("div", { staticClass: "card" }, [
-          _c(
-            "div",
-            { attrs: { id: "mapx" } },
-            [
-              _c(
-                "l-map",
-                {
-                  staticStyle: { height: "100%", width: "100%" },
-                  attrs: { zoom: _vm.zoom, center: _vm.center },
-                  on: {
-                    "update:zoom": _vm.zoomUpdated,
-                    "update:center": _vm.centerUpdated,
-                    "update:bounds": _vm.boundsUpdated
-                  }
-                },
-                [
-                  _c("l-tile-layer", { attrs: { url: _vm.url } }),
-                  _vm._v(" "),
-                  _c("l-geo-json", {
+  return _c(
+    "div",
+    { staticClass: "container-fluid" },
+    [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-10", staticStyle: { padding: "0" } }, [
+          _c("div", { staticClass: "card" }, [
+            _c(
+              "div",
+              { staticClass: "mapWeb", attrs: { id: "mapx" } },
+              [
+                _c(
+                  "l-map",
+                  {
+                    staticStyle: { height: "100%", width: "100%" },
                     attrs: {
-                      geojson: _vm.geojson,
-                      "options-style": _vm.styleFunction
+                      zoom: _vm.zoom,
+                      center: _vm.center,
+                      options: { zoomControl: false }
                     }
-                  }),
-                  _vm._v(" "),
-                  !_vm.caseLoader
-                    ? _c(
-                        "div",
-                        _vm._l(_vm.cases.data, function(casx) {
-                          return _c(
-                            "div",
-                            { key: casx.name },
-                            [
-                              _c("l-circle", {
-                                attrs: {
-                                  "lat-lng": [casx.longitude, casx.latitude],
-                                  radius: _vm.getRadius(casx.total_case),
-                                  color: "red",
-                                  "fill-color": "#ff0000",
-                                  opacity: _vm.circleOpacity,
-                                  "fill-opacity": _vm.circleFillOpacity
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        }),
-                        0
-                      )
-                    : _vm._e()
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-2", staticStyle: { padding: "0" } }, [
-        _c("div", { staticClass: "card", staticStyle: { padding: "10px" } }, [
-          !_vm.statsLoader
-            ? _c(
-                "div",
-                {
-                  staticClass: "row",
-                  staticStyle: { "align-items": "center" }
-                },
-                [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "col-lg-6 col-md-12 col-xs-12 text-center",
-                      on: {
-                        click: function($event) {
-                          return _vm.launchModal()
+                  },
+                  [
+                    _c("l-control", { attrs: { position: "topleft" } }, [
+                      _c("i", {
+                        staticClass: "fa fa-bars",
+                        on: {
+                          click: function($event) {
+                            _vm.active = !_vm.active
+                          }
                         }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("l-control-zoom", {
+                      attrs: { position: "bottomright" }
+                    }),
+                    _vm._v(" "),
+                    _c("l-tile-layer", { attrs: { url: _vm.url } }),
+                    _vm._v(" "),
+                    _c("l-geo-json", {
+                      attrs: {
+                        geojson: _vm.geojson,
+                        "options-style": _vm.styleFunction
                       }
-                    },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "card m_block",
-                          class: { all_border: _vm.mode == "all" }
-                        },
-                        [
-                          _c("strong", { staticClass: "c_number" }, [
-                            _vm._v(_vm._s(_vm.stats.data.total_cases))
-                          ]),
-                          _vm._v(" "),
-                          _c("span", { staticClass: "c_title" }, [
-                            _vm._v("Total Cases")
-                          ])
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-lg-6 col-xs-12 text-center" }, [
-                    _c("div", { staticClass: "card m_block" }, [
-                      _c("strong", { staticClass: "c_number" }, [
-                        _vm._v(_vm._s(_vm.stats.data.total_active_cases))
-                      ]),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "c_title" }, [_vm._v("Active")])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-lg-6 col-xs-12 text-center" }, [
-                    _c("div", { staticClass: "card m_block" }, [
-                      _c("strong", { staticClass: "c_number" }, [
-                        _vm._v(_vm._s(_vm.stats.data.total_deaths))
-                      ]),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "c_title" }, [_vm._v("Deaths")])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-lg-6 col-xs-12 text-center" }, [
-                    _c("div", { staticClass: "card m_block" }, [
-                      _c("strong", { staticClass: "c_number" }, [
-                        _vm._v(_vm._s(_vm.stats.data.total_recoveries))
-                      ]),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "c_title" }, [
-                        _vm._v("Discharged")
-                      ])
-                    ])
-                  ])
-                ]
-              )
-            : _c("div", { staticStyle: { "align-items": "center" } }, [
-                _c("img", {
-                  staticClass: "img-fluid ",
-                  attrs: {
-                    src:
-                      "https://constructs.stampede-design.com/wp-content/uploads/2015/06/buffer-loading.gif"
-                  }
-                })
-              ]),
-          _vm._v(" "),
-          _c("hr"),
-          _vm._v(" "),
-          _c("div", { staticClass: "sidebar" }, [
-            !_vm.stateLoader
-              ? _c(
-                  "div",
-                  _vm._l(_vm.statesList.data, function(singleState) {
-                    return _c(
+                    }),
+                    _vm._v(" "),
+                    !_vm.caseLoader
+                      ? _c(
+                          "div",
+                          _vm._l(_vm.cases.data, function(casx) {
+                            return _c(
+                              "div",
+                              { key: casx.name },
+                              [
+                                _c("l-circle", {
+                                  attrs: {
+                                    "lat-lng": [casx.longitude, casx.latitude],
+                                    radius: _vm.getRadius(casx.total_case),
+                                    color: "red",
+                                    "fill-color": "#ff0000",
+                                    opacity: _vm.circleOpacity,
+                                    "fill-opacity": _vm.circleFillOpacity
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          }),
+                          0
+                        )
+                      : _vm._e()
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "mapMobile", attrs: { id: "mapx" } },
+              [
+                _c(
+                  "l-map",
+                  {
+                    staticStyle: { height: "100%", width: "100%" },
+                    attrs: {
+                      zoom: _vm.mobileZoom,
+                      center: _vm.center,
+                      options: { zoomControl: false }
+                    }
+                  },
+                  [
+                    _c("l-control", { attrs: { position: "topleft" } }, [
+                      _c("i", {
+                        staticClass: "fa fa-bars",
+                        on: {
+                          click: function($event) {
+                            _vm.active = !_vm.active
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("l-control-zoom", {
+                      attrs: { position: "bottomright" }
+                    }),
+                    _vm._v(" "),
+                    _c("l-tile-layer", { attrs: { url: _vm.url } }),
+                    _vm._v(" "),
+                    _c("l-geo-json", {
+                      attrs: {
+                        geojson: _vm.geojson,
+                        "options-style": _vm.styleFunction
+                      }
+                    }),
+                    _vm._v(" "),
+                    !_vm.caseLoader
+                      ? _c(
+                          "div",
+                          _vm._l(_vm.cases.data, function(casx) {
+                            return _c(
+                              "div",
+                              { key: casx.name },
+                              [
+                                _c("l-circle", {
+                                  attrs: {
+                                    "lat-lng": [casx.longitude, casx.latitude],
+                                    radius: _vm.getRadius(casx.total_case),
+                                    color: "red",
+                                    "fill-color": "#ff0000",
+                                    opacity: _vm.circleOpacity,
+                                    "fill-opacity": _vm.circleFillOpacity
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          }),
+                          0
+                        )
+                      : _vm._e()
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "col-md-2",
+            staticStyle: { padding: "0" },
+            attrs: { id: "main-sidebar" }
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "card", staticStyle: { padding: "10px" } },
+              [
+                !_vm.statsLoader
+                  ? _c(
                       "div",
                       {
-                        key: singleState.id,
-                        staticClass: "card",
-                        staticStyle: {
-                          padding: "5px",
-                          "margin-top": "5px",
-                          width: "100%"
-                        }
+                        staticClass: "row",
+                        staticStyle: { "align-items": "center" }
                       },
                       [
                         _c(
                           "div",
                           {
-                            staticClass: "row",
-                            staticStyle: { "align-items": "center" }
+                            staticClass:
+                              "col-lg-12 col-md-12 col-xs-12 col-xl-6 text-center",
+                            on: {
+                              click: function($event) {
+                                return _vm.launchModal()
+                              }
+                            }
                           },
                           [
-                            _c("div", { staticClass: "col-md-3 " }, [
-                              _c("img", {
-                                staticClass: "img-fluid imgClass",
-                                attrs: { src: singleState.image }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-md-6 " }, [
-                              _c("h6", [_vm._v(_vm._s(singleState.name))])
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-md-3 " }, [
-                              _c("h6", { staticClass: "numbers" }, [
-                                _vm._v(_vm._s(singleState.total_case))
+                            _c(
+                              "div",
+                              {
+                                staticClass: "card m_block",
+                                class: { all_border: _vm.mode == "all" }
+                              },
+                              [
+                                _c("strong", { staticClass: "c_number" }, [
+                                  _vm._v(_vm._s(_vm.stats.data.total_cases))
+                                ]),
+                                _vm._v(" "),
+                                _c("span", { staticClass: "c_title" }, [
+                                  _vm._v("Total Cases")
+                                ])
+                              ]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-lg-12 col-md-12 col-xs-12 col-xl-6 text-center"
+                          },
+                          [
+                            _c("div", { staticClass: "card m_block" }, [
+                              _c("strong", { staticClass: "c_number" }, [
+                                _vm._v(
+                                  _vm._s(_vm.stats.data.total_active_cases)
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "c_title" }, [
+                                _vm._v("Active")
+                              ])
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-lg-12 col-md-12 col-xs-12 col-xl-6 text-center"
+                          },
+                          [
+                            _c("div", { staticClass: "card m_block" }, [
+                              _c("strong", { staticClass: "c_number" }, [
+                                _vm._v(_vm._s(_vm.stats.data.total_deaths))
+                              ]),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "c_title" }, [
+                                _vm._v("Deaths")
+                              ])
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-lg-12 col-md-12 col-xs-12 col-xl-6 text-center"
+                          },
+                          [
+                            _c("div", { staticClass: "card m_block" }, [
+                              _c("strong", { staticClass: "c_number" }, [
+                                _vm._v(_vm._s(_vm.stats.data.total_recoveries))
+                              ]),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "c_title" }, [
+                                _vm._v("Discharged")
                               ])
                             ])
                           ]
                         )
                       ]
                     )
-                  }),
-                  0
-                )
-              : _c("div", { staticStyle: { "align-items": "center" } }, [
-                  _c("img", {
-                    staticClass: "img-fluid ",
-                    attrs: {
-                      src:
-                        "https://constructs.stampede-design.com/wp-content/uploads/2015/06/buffer-loading.gif"
-                    }
-                  })
+                  : _c("div", { staticStyle: { "align-items": "center" } }, [
+                      _c("img", {
+                        staticClass: "img-fluid ",
+                        attrs: {
+                          src:
+                            "https://constructs.stampede-design.com/wp-content/uploads/2015/06/buffer-loading.gif"
+                        }
+                      })
+                    ]),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _c("div", { staticClass: "sidebar" }, [
+                  !_vm.stateLoader
+                    ? _c(
+                        "div",
+                        _vm._l(_vm.statesList.data, function(singleState) {
+                          return _c(
+                            "div",
+                            {
+                              key: singleState.id,
+                              staticClass: "card",
+                              staticStyle: {
+                                padding: "5px",
+                                "margin-top": "5px",
+                                width: "100%"
+                              }
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "row",
+                                  staticStyle: { "align-items": "center" }
+                                },
+                                [
+                                  _c("div", { staticClass: "col-md-3 " }, [
+                                    _c("img", {
+                                      staticClass: "img-fluid imgClass",
+                                      attrs: { src: singleState.image }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-md-6 " }, [
+                                    _c("h6", [_vm._v(_vm._s(singleState.name))])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-md-3 " }, [
+                                    _c("h6", { staticClass: "numbers" }, [
+                                      _vm._v(_vm._s(singleState.total_case))
+                                    ])
+                                  ])
+                                ]
+                              )
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    : _c("div", { staticStyle: { "align-items": "center" } }, [
+                        _c("img", {
+                          staticClass: "img-fluid ",
+                          attrs: {
+                            src:
+                              "https://constructs.stampede-design.com/wp-content/uploads/2015/06/buffer-loading.gif"
+                          }
+                        })
+                      ])
                 ])
+              ]
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "vs-sidebar",
+        {
+          staticClass: "sidebarx",
+          attrs: {
+            parent: "body",
+            "default-index": "1",
+            color: "primary",
+            spacer: ""
+          },
+          model: {
+            value: _vm.active,
+            callback: function($$v) {
+              _vm.active = $$v
+            },
+            expression: "active"
+          }
+        },
+        [
+          _c("div", { staticStyle: { padding: "0" } }, [
+            _c(
+              "div",
+              { staticClass: "card", staticStyle: { padding: "10px" } },
+              [
+                !_vm.statsLoader
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "row",
+                        staticStyle: { "align-items": "center" }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-lg-12 col-md-12 col-xs-12 col-xl-6 text-center",
+                            on: {
+                              click: function($event) {
+                                return _vm.launchModal()
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "card m_block",
+                                class: { all_border: _vm.mode == "all" }
+                              },
+                              [
+                                _c("strong", { staticClass: "c_number" }, [
+                                  _vm._v(_vm._s(_vm.stats.data.total_cases))
+                                ]),
+                                _vm._v(" "),
+                                _c("span", { staticClass: "c_title" }, [
+                                  _vm._v("Total Cases")
+                                ])
+                              ]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-lg-12 col-md-12 col-xs-12 col-xl-6 text-center"
+                          },
+                          [
+                            _c("div", { staticClass: "card m_block" }, [
+                              _c("strong", { staticClass: "c_number" }, [
+                                _vm._v(
+                                  _vm._s(_vm.stats.data.total_active_cases)
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "c_title" }, [
+                                _vm._v("Active")
+                              ])
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-lg-12 col-md-12 col-xs-12 col-xl-6 text-center"
+                          },
+                          [
+                            _c("div", { staticClass: "card m_block" }, [
+                              _c("strong", { staticClass: "c_number" }, [
+                                _vm._v(_vm._s(_vm.stats.data.total_deaths))
+                              ]),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "c_title" }, [
+                                _vm._v("Deaths")
+                              ])
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col-lg-12 col-md-12 col-xs-12 col-xl-6 text-center"
+                          },
+                          [
+                            _c("div", { staticClass: "card m_block" }, [
+                              _c("strong", { staticClass: "c_number" }, [
+                                _vm._v(_vm._s(_vm.stats.data.total_recoveries))
+                              ]),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "c_title" }, [
+                                _vm._v("Discharged")
+                              ])
+                            ])
+                          ]
+                        )
+                      ]
+                    )
+                  : _c("div", { staticStyle: { "align-items": "center" } }, [
+                      _c("img", {
+                        staticClass: "img-fluid ",
+                        attrs: {
+                          src:
+                            "https://constructs.stampede-design.com/wp-content/uploads/2015/06/buffer-loading.gif"
+                        }
+                      })
+                    ]),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _c("div", { staticClass: "sidebar" }, [
+                  !_vm.stateLoader
+                    ? _c(
+                        "div",
+                        _vm._l(_vm.statesList.data, function(singleState) {
+                          return _c(
+                            "div",
+                            {
+                              key: singleState.id,
+                              staticClass: "card",
+                              staticStyle: {
+                                padding: "5px",
+                                "margin-top": "5px",
+                                width: "100%"
+                              }
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "row",
+                                  staticStyle: { "align-items": "center" }
+                                },
+                                [
+                                  _c("div", { staticClass: "col-md-3 " }, [
+                                    _c("img", {
+                                      staticClass: "img-fluid imgClass",
+                                      attrs: { src: singleState.image }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-md-6 " }, [
+                                    _c("h6", [_vm._v(_vm._s(singleState.name))])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-md-3 " }, [
+                                    _c("h6", { staticClass: "numbers" }, [
+                                      _vm._v(_vm._s(singleState.total_case))
+                                    ])
+                                  ])
+                                ]
+                              )
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    : _c("div", { staticStyle: { "align-items": "center" } }, [
+                        _c("img", {
+                          staticClass: "img-fluid ",
+                          attrs: {
+                            src:
+                              "https://constructs.stampede-design.com/wp-content/uploads/2015/06/buffer-loading.gif"
+                          }
+                        })
+                      ])
+                ])
+              ]
+            )
           ])
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _vm._m(0)
-  ])
+        ]
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {

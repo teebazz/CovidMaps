@@ -10,6 +10,11 @@ import router from './router';
 
 window.Vue = require('vue');
 import VueRouter from 'vue-router'
+import Vuesax from 'vuesax'
+import 'vuesax/dist/vuesax.css' //Vuesax styles
+Vue.use(Vuesax, {
+  // options here
+})
 Vue.use(VueRouter);
 import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -21,6 +26,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import jQuery from 'jquery';
 import 'popper.js';
 window.$ = window.jQuery = jQuery;
+Vue.component('map-component', require('./components/Map.vue').default);
+Vue.component('sidebar-component', require('./components/Sidebar.vue').default);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

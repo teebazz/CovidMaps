@@ -6,109 +6,18 @@
           
          </div>
       </div> -->
-      <div class="col-md-10" style="padding:0">
+      <div class="col-md-12 col-xl-10" style="padding:0">
         <div class="card">
-          <div id="mapx">
-            <!-- <div class="info" style="height: 15%">
-                <span>Center: {{ center }}</span>
-                <span>Zoom: {{ zoom }}</span>
-                <span>Bounds: {{ bounds }}</span>
-            </div> -->
-            <l-map
-            style="height: 100%; width: 100%"
-            :zoom="zoom"
-            :center="center"
-            @update:zoom="zoomUpdated"
-            @update:center="centerUpdated"
-            @update:bounds="boundsUpdated"
-            >
-            <l-tile-layer :url="url"></l-tile-layer>
-            <l-geo-json :geojson="geojson" :options-style="styleFunction" ></l-geo-json>              
-              <div v-if="!caseLoader">
-                <!-- <div v-for="state in states" v-bind:key="state.id">
-                  <l-geo-json :geojson="state.bound" :options-style="styleFunctionSatet" ></l-geo-json>
-                </div> -->
-                <div v-for="casx in cases.data" v-bind:key="casx.name" >
-                  <!-- <l-marker :lat-lng="[casx.longitude,casx.latitude]" :icon="icon">
-                    <l-popup>
-                      {{casx.name}}
-                    </l-popup>
-                  </l-marker> -->
-                  <l-circle
-                    :lat-lng="[casx.longitude,casx.latitude]"
-                    :radius="getRadius(casx.total_case)" color='red' fill-color="#ff0000" :opacity="circleOpacity" :fill-opacity="circleFillOpacity"
-                  />
-                </div>
-              </div>
-            </l-map>
+          <div id="mapx" class="mapWeb">
+            <map-component :zoom="zoom" v-on:side-bar="sideAction" :active="active" ></map-component>
+          </div>
+          <div class="mapMobile" id="mapx" > 
+            <map-component :zoom="mobileZoom" v-on:side-bar="sideAction" :active="active"></map-component>
           </div>
         </div>
       </div>
-      <div class="col-md-2" style="padding:0">
-        <div class="card" style="padding:10px">          
-            <div class="row" style="align-items: center;" v-if="!statsLoader">
-              <div class="col-lg-6 col-md-12 col-xs-12 text-center" v-on:click="launchModal()">
-                <div class="card m_block" v-bind:class="{ 'all_border': mode == 'all' }">
-                  <strong class="c_number">{{stats.data.total_cases}}</strong>
-                  <span class="c_title">Total Cases</span>
-                </div>
-              </div>
-              <div class="col-lg-6 col-xs-12 text-center">
-                <div class="card m_block">
-                  <strong class="c_number">{{stats.data.total_active_cases}}</strong>
-                  <span class="c_title">Active</span>
-                </div>
-              </div>
-              <div class="col-lg-6 col-xs-12 text-center">
-                <div class="card m_block">
-                  <strong class="c_number">{{stats.data.total_deaths}}</strong>
-                  <span class="c_title">Deaths</span>
-                </div>
-              </div>
-              <div class="col-lg-6 col-xs-12 text-center">
-                <div class="card m_block">
-                  <strong class="c_number">{{stats.data.total_recoveries}}</strong>
-                  <span class="c_title">Discharged</span>
-                </div>
-              </div>
-              <!-- <div class="col-lg-6 col-xs-12 text-center">
-                <div class="card m_block">
-                  <strong class="c_number">X</strong>
-                  <span class="c_title">Index Cases</span>
-                </div>
-              </div>
-              <div class="col-lg-6 col-xs-12 text-center">
-                <div class="card m_block">
-                  <strong class="c_number">X</strong>
-                  <span class="c_title">Contact Cases</span>
-                </div>
-              </div> -->
-            </div>   
-            <div v-else style="align-items: center;">
-              <img src="https://constructs.stampede-design.com/wp-content/uploads/2015/06/buffer-loading.gif" class="img-fluid ">
-            </div>      
-          <hr>   
-          <div class="sidebar">   
-            <div v-if="!stateLoader">    
-              <div class="card" style="padding:5px;margin-top:5px;width:100%;" v-for="singleState in statesList.data" :key="singleState.id">
-                <div class="row" style="align-items: center;">
-                  <div class="col-md-3 ">
-                    <img :src="singleState.image" class="img-fluid imgClass">
-                  </div>
-                  <div class="col-md-6 ">
-                    <h6>{{singleState.name}}</h6>
-                  </div>
-                  <div class="col-md-3 ">
-                    <h6 class="numbers">{{singleState.total_case}}</h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div v-else style="align-items: center;">
-              <img src="https://constructs.stampede-design.com/wp-content/uploads/2015/06/buffer-loading.gif" class="img-fluid ">
-            </div> 
-          </div>
-        </div>
+      <div class="col-md-3 col-xl-2 mapWeb" style="padding:0" id="main-sidebar">
+        <sidebar-component></sidebar-component>
       </div>
     </div>
     <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
@@ -128,10 +37,15 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div>
+     <vs-sidebar parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="active">
+       <div style="padding:0">
+        <sidebar-component></sidebar-component>
+      </div>
+     </vs-sidebar>
   </div>
 </template>
 <script>
-import { LMap, LTileLayer ,LGeoJson,  LMarker, LPopup,LIcon,LCircle} from "vue2-leaflet";
+import { LMap, LTileLayer ,LGeoJson,  LMarker, LPopup,LIcon,LCircle,LControlZoom, LControl} from "vue2-leaflet";
 import { latLng, icon } from "leaflet";
 export default {
   name : 'example-component',
@@ -142,159 +56,116 @@ export default {
     LMarker,
     LPopup,
     LIcon,
-    LCircle
+    LCircle,
+    LControlZoom,
+    LControl,
   },
   data() {
     return {
-      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       zoom: 6.4,
-      center: [9.0820, 8.6753],
-      caseLoader : true,
-      stateLoader : true,
-      statsLoader : true,
-      statesList: null,
-      mode: 'all',
-      stats : null,
-      cases : null,
-      bounds: null,
-      geojson: null,
-      states: null,
-      circleOpacity : 1 ,
-      circleFillOpacity : 0.6 ,
-      stateBoundaries : null,
-      fillColor: "#e4ce7f",
-      fillColorState: "#ff0000",
-      icon: icon({
-        iconUrl: "/geos/icon.png",
-        iconSize: [16, 16],
-        iconAnchor: [0, 0]
-      }),
+      mobileZoom: 5,
+      active : false,
     };
   },
   methods: {
-    getRadius(radius){
-      let fRadius = 0;
-      if(radius > 50){
-        fRadius = 50000;
-      }else if(radius > 10 && radius < 50){
-        fRadius = 30000;
-      }else{
-        fRadius =  10000;
-      }
-      return fRadius;
+    async initMap(){      
     },
-    zoomUpdated(zoom) {
-      this.zoom = zoom;
-    },
-    launchModal(){
-      jQuery('#myModal').modal('show'); 
-    },
-    centerUpdated(center) {
-      this.center = center;
-    },
-    boundsUpdated(bounds) {
-      this.bounds = bounds;
-    },
-    async initMap(){
-      // this.states = await response1.json(); 
-      const response = await fetch('https://raw.githubusercontent.com/davetaz/nigeria-map/gh-pages/data/processed/nigeria_regions.json');
-      this.geojson = await response.json(); 
-      this.getState();    
-      this.allCases();         
-      this.getStats();         
-    },
-    async getState(){
-      // this.states = await response1.json(); 
-      const response = await fetch('/api/states');
-      this.statesList = await response.json();
-      this.stateLoader = false;
-      // console.log(this.statesList);
-      // this.loadStatePoly();
-    },
-    loadStatePoly(){
-      let resultingArr = [];
-      var i = 0;
-      this.cases.data.map( async(res) =>{
-          let resp = await fetch(`https://geoserver.grid-nigeria.org/geoserver/GRIDMaster/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=GRIDMaster:sv_boundary_lgas&outputFormat=application%2Fjson&authkey=fdfe9a37-d2d0-4210-9a15-25dab5d907fa&CQL_FILTER=state_code=%27${res.code}%27`);
-          let jo = await resp.json(); 
-          res.restpn = jo;
-          var gfg = new Array(2); 
-          gfg['id'] = res.id;
-          gfg['bound'] = jo;
-          resultingArr.push(gfg);
-          
-      });
-      this.states = resultingArr;
-      // console.log(resultingArr);
-    },
-    async allCases(){
-      const response = await fetch('/api/active-cases');
-      this.cases = await response.json();
-      this.caseLoader = false;
-      this.loadStatePoly();
-    },
-    async getStats(){
-      const response = await fetch('/api/stats');
-      this.stats = await response.json();
-      console.log(this.stats);
-      
-      this.statsLoader = false;
+    sideAction(action){
+      this.active = action;      
     }
   }
   ,
   created () {
-    // const response = await fetch('https://raw.githubusercontent.com/davetaz/nigeria-map/gh-pages/data/processed/nigeria_regions.json');
-    // this.geojson = await response.json();
     this.initMap();       
     
   },
   computed : {
-    styleFunction() {
-      const fillColor = this.fillColor; // important! need touch fillColor in computed for re-calculate when change fillColor
-      return () => {
-        return {
-          weight: 2,
-          color: "#ECEFF1",
-          opacity: 1,
-          fillColor: '#065535',
-          fillOpacity: 1
-        };
-      };
-    },
-    styleFunctionSatet() {
-      const fillColorState = this.fillColorState; // important! need touch fillColor in computed for re-calculate when change fillColor
-      return () => {
-        return {
-          weight: 2,
-          color: "#ff0000",
-          opacity: 1,
-          fillColor: '#ff0000',
-          fillOpacity: 1
-        };
-      };
-    },
-  },
+    
+  }
 };
 </script>
-<style scoped>
-.sidebar{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  height: 100%;
-  max-height: 60vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding-top: 20px;
+<style>
+@media screen and (max-width: 1024px) {
+  .statShow{
+    display: block !important; 
+  }
+  .mainStats{
+    display: none !important; 
+  }
+  .sidebar{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;   
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-top: 20px;
+  }
+  .sdHeight{
+    height: 100%;
+    max-height: unset !important;
+  }
 }
-.imgClass{
+
+
+@media screen and (max-width: 768px) {
+  #main-sidebar{
+    display: none;
+  }
+  .imgClass{
+    width: 20%;
+    height: 20%;
+    -o-object-fit: scale-down;
+    object-fit: scale-down;
+  }
+  .mapMobile{
+    display: block;
+  }
+  .mapWeb{
+    display: none;
+  }
+  .sidebarDef{
+      display: block;
+  }
+  
+  
+}
+
+@media screen and (min-width: 769px) {
+  .imgClass{
     width: 50%;
     height: 50%;
     -o-object-fit: scale-down;
     object-fit: scale-down;
+  }
+  .mapMobile{
+    display: none;
+  }
 }
+
+.sidebar{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-top: 20px;
+  }
+  .sdHeight{
+    height: 100%;
+    max-height: 60vh;
+  }
+
+.statShow{
+  display: none;
+}
+
+ .mainStats{
+    display: block ; 
+  }
 
 .numbers{
   font-weight: 900;
@@ -323,6 +194,9 @@ export default {
   border: 1px solid red;
 }
 #mapx{
-  height: 100vh
+  height: 100vh;
+}
+.fa-bars{
+  font-size: 20px;
 }
 </style>
