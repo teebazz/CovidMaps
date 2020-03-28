@@ -3,25 +3,25 @@
     <div class="card" style="padding:10px">    
         <div class="mainStats">      
             <div class="row" style="align-items: center;" v-if="!statsLoader">
-                <div class="col-lg-12 col-md-12 col-xs-12 col-xl-6 text-center">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-xl-12 text-center">
                 <div class="card m_block" v-bind:class="{ 'all_border': mode == 'all' }">
                     <strong class="c_number">{{stats.data.total_cases}}</strong>
                     <span class="c_title">Total Cases</span>
                 </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-xs-12 col-xl-6 text-center">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-xl-12 text-center">
                 <div class="card m_block">
                     <strong class="c_number">{{stats.data.total_active_cases}}</strong>
                     <span class="c_title">Active</span>
                 </div>
                 </div>
-                <div class="col text-center">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-xl-12 text-center">
                 <div class="card m_block">
                     <strong class="c_number">{{stats.data.total_deaths}}</strong>
                     <span class="c_title">Deaths</span>
                 </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-xs-12 col-xl-6 text-center">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-xl-12 text-center">
                 <div class="card m_block">
                     <strong class="c_number">{{stats.data.total_recoveries}}</strong>
                     <span class="c_title">Discharged</span>
@@ -37,14 +37,14 @@
         <div v-if="!stateLoader">    
             <div class="card" style="padding:5px;margin-top:5px;width:100%;" v-for="singleState in statesList.data" :key="singleState.id">
             <div class="row" style="align-items: center;" @click="caseBreakdown(singleState)">
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                <img :src="singleState.image" class="img-fluid imgClass">
+                <div class="col-lg-2 col-md-2 col-sm-2" style="padding-right: 3px;">
+                    <img :src="singleState.image" class="img-fluid imgClass">
                 </div>
                 <div class="col-lg-6 col-md-d col-sm-6">
-                <h6>{{singleState.name}}</h6>
+                    <h6>{{singleState.name}}</h6>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                <h6 class="numbers">{{singleState.total_case}}</h6>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <h6 class="numbers">{{singleState.total_case}}</h6>
                 </div>
             </div>
             </div>

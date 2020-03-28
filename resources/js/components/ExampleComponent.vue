@@ -109,7 +109,7 @@ export default {
 }
 
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1200px) {
   #main-sidebar{
     display: none;
   }
@@ -132,10 +132,10 @@ export default {
   
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 1201px) {
   .imgClass{
-    width: 50%;
-    height: 50%;
+    width: 70%;
+    height: 70%;
     -o-object-fit: scale-down;
     object-fit: scale-down;
   }
@@ -169,7 +169,7 @@ export default {
 
 .numbers{
   font-weight: 900;
-  font-size: 18px;
+  font-size: 14px;
   color:red;
   /* text-align:left !important ; */
 }

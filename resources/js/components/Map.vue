@@ -13,25 +13,25 @@
                     <div class="row" style="align-items: center;margin-top:30px" v-if="!statsLoader">
                         <div class="text-center" v-on:click="launchModal()">
                             <div class="card m_block" v-bind:class="{ 'all_border': mode == 'all' }">
-                                <strong class="c_number">81</strong>
+                                <strong class="c_number">{{stats.data.total_cases}}</strong>
                                 <span class="c_title">Total Cases</span>
                             </div>
                         </div>
                         <div class="text-center">
                             <div class="card m_block">
-                                <strong class="c_number">6</strong>
+                                <strong class="c_number">{{stats.data.total_active_cases}}</strong>
                                 <span class="c_title">Active</span>
                             </div>
                         </div>
                         <div class="text-center">
                             <div class="card m_block">
-                                <strong class="c_number">6</strong>
+                                <strong class="c_number">{{stats.data.total_deaths}}</strong>
                                 <span class="c_title">Deaths</span>
                             </div>
                         </div>
                         <div class="text-center">
                             <div class="card m_block">
-                                <strong class="c_number">1</strong>
+                                <strong class="c_number">{{stats.data.total_recoveries}}</strong>
                                 <span class="c_title">Discharged</span>
                             </div>
                         </div>

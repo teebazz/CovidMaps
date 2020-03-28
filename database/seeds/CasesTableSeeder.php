@@ -14,7 +14,7 @@ class CasesTableSeeder extends Seeder
     {
         
 
-        \DB::table('cases')->truncate();
+        \DB::table('cases')->delete();
         
         \DB::table('cases')->insert(array (
             0 => 
@@ -456,6 +456,26 @@ class CasesTableSeeder extends Seeder
                 'state_id' => 12,
                 'created_at' => '2020-03-27 00:00:00',
                 'updated_at' => '2020-03-28 07:07:04',
+            ),
+            44 => 
+            array (
+                'id' => 45,
+                'number' => '7',
+                'type' => 'unknown',
+                'status' => 'active',
+                'state_id' => 25,
+                'created_at' => '2020-03-28 00:00:00',
+                'updated_at' => '2020-03-28 15:16:11',
+            ),
+            45 => 
+            array (
+                'id' => 46,
+                'number' => '1',
+                'type' => 'unknown',
+                'status' => 'active',
+                'state_id' => 7,
+                'created_at' => '2020-03-28 00:00:00',
+                'updated_at' => '2020-03-28 15:16:25',
             ),
         ));
         

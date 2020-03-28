@@ -14,7 +14,7 @@ class StatesTableSeeder extends Seeder
     {
         
 
-        \DB::table('states')->truncate();
+        \DB::table('states')->delete();
         
         \DB::table('states')->insert(array (
             0 => 
@@ -157,10 +157,10 @@ class StatesTableSeeder extends Seeder
                 'code' => 'BE',
                 'longitude' => '7.3369',
                 'latitude' => '8.7404',
-                'total_case' => 0,
+                'total_case' => 1,
                 'deaths' => 0,
                 'recoveries' => 0,
-                'active_cases' => 0,
+                'active_cases' => 1,
                 'index_cases' => 0,
                 'contact_cases' => 0,
                 'tracing_index' => 0,
@@ -169,7 +169,7 @@ class StatesTableSeeder extends Seeder
                 'country_id' => 1,
                 'boundary' => NULL,
                 'created_at' => NULL,
-                'updated_at' => NULL,
+                'updated_at' => '2020-03-28 15:16:25',
             ),
             7 => 
             array (
@@ -336,7 +336,7 @@ class StatesTableSeeder extends Seeder
                 'total_case' => 14,
                 'deaths' => 0,
                 'recoveries' => 0,
-                'active_cases' => 15,
+                'active_cases' => 14,
                 'index_cases' => 7,
                 'contact_cases' => 0,
                 'tracing_index' => 0,
@@ -553,10 +553,10 @@ class StatesTableSeeder extends Seeder
                 'code' => 'LA',
                 'longitude' => '6.5244',
                 'latitude' => '3.3792',
-                'total_case' => 52,
+                'total_case' => 59,
                 'deaths' => 1,
                 'recoveries' => 2,
-                'active_cases' => 49,
+                'active_cases' => 56,
                 'index_cases' => 34,
                 'contact_cases' => 0,
                 'tracing_index' => 0,
@@ -565,7 +565,7 @@ class StatesTableSeeder extends Seeder
                 'country_id' => 1,
                 'boundary' => NULL,
                 'created_at' => NULL,
-                'updated_at' => '2020-03-28 07:06:17',
+                'updated_at' => '2020-03-28 15:16:11',
             ),
             25 => 
             array (
