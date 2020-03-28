@@ -86,8 +86,6 @@
         </div>
     </div>
 </div>
-
-  
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -106,7 +104,7 @@
                 </div>
                 <div class="form-group">
                     <label>Type</label>                                
-                    {!!Form::select('type',['index' => 'Index','contact' => 'Contact'],'',['class' => 'form-control','required autofocus'])!!}
+                    {!!Form::select('type',['unknown' => 'Unknown','index' => 'Index','contact' => 'Contact'],'',['class' => 'form-control','required autofocus'])!!}
                 </div>
                 <div class="form-group">
                     <label>Status</label>                                
@@ -114,7 +112,11 @@
                 </div>
                 <div class="form-group">
                     <label>State</label>                                
-                    {!!Form::select('state',$states,'',['class' => 'form-control','required autofocus'])!!}
+                    {!!Form::select('state_id',$states,'',['class' => 'form-control','required autofocus'])!!}
+                </div>
+                <div class="form-group">
+                    <label>Date</label>                                
+                    {!!Form::date('created_at','',['class' => 'form-control','required autofocus'])!!}
                 </div>
             </div>
             <div class="modal-footer">

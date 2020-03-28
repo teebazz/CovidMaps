@@ -33,10 +33,10 @@
                     {{casx.name}}
                   </l-popup>
                 </l-marker> -->
-                <l-circle
+                <!-- <l-circle
                   :lat-lng="[casx.longitude,casx.latitude]"
                   radius="45000" color='red' fill-color="#ff0000" opacity="1" fill-opacity="0.6"
-                />
+                /> -->
               </div>
             </l-map>
           </div>
@@ -183,12 +183,6 @@ export default {
       // this.loadStatePoly();
     },
     loadStatePoly(){
-      this.stateBoundaries = [
-        [
-          bound => 'https://geoserver.grid-nigeria.org/geoserver/GRIDMaster/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=GRIDMaster:sv_boundary_lgas&outputFormat=application%2Fjson&authkey=fdfe9a37-d2d0-4210-9a15-25dab5d907fa&CQL_FILTER=state_code=%27LA%27',
-          restpn => '',
-        ]
-      ];
       let resultingArr = [];
       var i = 0;
       this.cases.data.map( async(res) =>{
@@ -225,7 +219,7 @@ export default {
           weight: 2,
           color: "#ECEFF1",
           opacity: 1,
-          fillColor: fillColor,
+          fillColor: '#065535',
           fillOpacity: 1
         };
       };
@@ -234,11 +228,11 @@ export default {
       const fillColorState = this.fillColorState; // important! need touch fillColor in computed for re-calculate when change fillColor
       return () => {
         return {
-          weight: 1,
+          weight: 2,
           color: "#ff0000",
-          opacity: 0.1,
-          fillColor: fillColorState,
-          fillOpacity: 0.1
+          opacity: 1,
+          fillColor: '#ff0000',
+          fillOpacity: 1
         };
       };
     },

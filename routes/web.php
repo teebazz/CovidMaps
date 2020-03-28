@@ -26,3 +26,4 @@ Route::get('/botman/tinker', 'BotManController@tinker');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post('add-new-case', 'HomeController@addCase')->name('add-new-case');

@@ -251,11 +251,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     loadStatePoly: function loadStatePoly() {
-      this.stateBoundaries = [[function (bound) {
-        return 'https://geoserver.grid-nigeria.org/geoserver/GRIDMaster/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=GRIDMaster:sv_boundary_lgas&outputFormat=application%2Fjson&authkey=fdfe9a37-d2d0-4210-9a15-25dab5d907fa&CQL_FILTER=state_code=%27LA%27';
-      }, function (restpn) {
-        return '';
-      }]];
       var resultingArr = [];
       var i = 0;
       this.cases.data.map( /*#__PURE__*/function () {
@@ -341,7 +336,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           weight: 2,
           color: "#ECEFF1",
           opacity: 1,
-          fillColor: fillColor,
+          fillColor: '#065535',
           fillOpacity: 1
         };
       };
@@ -351,11 +346,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return function () {
         return {
-          weight: 1,
+          weight: 2,
           color: "#ff0000",
-          opacity: 0.1,
-          fillColor: fillColorState,
-          fillOpacity: 0.1
+          opacity: 1,
+          fillColor: '#ff0000',
+          fillOpacity: 1
         };
       };
     }
@@ -474,23 +469,7 @@ var render = function() {
                   }),
                   _vm._v(" "),
                   _vm._l(_vm.cases.data, function(casx) {
-                    return _c(
-                      "div",
-                      { key: casx.id },
-                      [
-                        _c("l-circle", {
-                          attrs: {
-                            "lat-lng": [casx.longitude, casx.latitude],
-                            radius: "45000",
-                            color: "red",
-                            "fill-color": "#ff0000",
-                            opacity: "1",
-                            "fill-opacity": "0.6"
-                          }
-                        })
-                      ],
-                      1
-                    )
+                    return _c("div", { key: casx.id })
                   })
                 ],
                 2
