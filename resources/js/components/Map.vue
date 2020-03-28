@@ -42,24 +42,34 @@
                 <button class="btn btn-sm btn-miner btn-success"  @click="active=!active" style="font-size:12px;"> <i class="fa fa-bars"> </i>Stats By States</button>
             </l-control>
             <l-control-zoom position="bottomright"  ></l-control-zoom>
-            <l-tile-layer :url="url"></l-tile-layer>
-            <l-geo-json :geojson="geojson" :options-style="styleFunction" ></l-geo-json>              
-            <div v-if="!caseLoader">
-                <!-- <div v-for="state in states" v-bind:key="state.id">
-                <l-geo-json :geojson="state.bound" :options-style="styleFunctionSatet" ></l-geo-json>
-                </div> -->
-                <div v-for="casx in cases.data" v-bind:key="casx.name" >
-                <l-circle
-                    :lat-lng="[casx.longitude,casx.latitude]"
-                    :radius="getRadius(casx.total_case)" color='red' fill-color="#ff0000" :opacity="circleOpacity" :fill-opacity="circleFillOpacity"
-                />
+            <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+            <l-geo-json :geojson="geojson" :options-style="styleFunction" pane='overlayPane' ></l-geo-json>              
+            <div v-if="!caseLoader">          
+                    <div v-for="casx in cases.data" v-bind:key="casx.name" >
+                        <l-circle
+                            :lat-lng="[casx.longitude,casx.latitude]"
+                            :radius="getRadius(casx.total_case)" color='red' fill-color="#ff0000" :opacity="circleOpacity" :weight="weight" :fill-opacity="circleFillOpacity" pane='shadowPane'
+                        >
+                            <l-popup>
+                                <strong>{{casx.name}} State</strong> <br>
+                                <strong>Total Cases : <span id="cs_color">{{casx.total_case}}</span> </strong><br>
+                                <strong>Active Cases :  <span id="cs_color">{{casx.active_cases}}</span></strong><br>
+                                <strong>Isolation Centers : </strong> : <i>--No Data yet--</i> <br>
+                                <strong>Emergency Numbers : </strong> : <i>--No Data yet--</i> <br>
+                            </l-popup>
+                        </l-circle>
+                    </div>
+                <div v-for="state in states" v-bind:key="state.id">
+                    <l-geo-json :geojson="state.bound" :options-style="styleFunctionSatet" :name="state.name" pane='overlayPane'>
+                        
+                    </l-geo-json>
                 </div>
             </div>
         </l-map>     
     </div>
     <vs-sidebar parent="body" default-index="1"  color="primary" class="sidebarx"  spacer v-model="active">
        <div style="padding:0">
-        <sidebar-component></sidebar-component>
+        <sidebar-component v-on:remove-sidebar="removeSideBar"></sidebar-component>
       </div>
      </vs-sidebar>
   </div>
@@ -78,17 +88,20 @@ export default {
     LIcon,
     LCircle,
     LControlZoom,
-    LControl
+    LControl,
   },
   data() {
     return {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      attribution:
+        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors . Powered By Tishlabs.com.ng',
       center: [9.0820, 8.6753],
       caseLoader : true,
       stateLoader : true,
       statsLoader : true,
       statesList: null,
       active : false,
+      caseFinished : false,
       mode: 'all',
       stats : null,
       cases : null,
@@ -97,13 +110,14 @@ export default {
       states: null,
       circleOpacity : 1 ,
       circleFillOpacity : 0.6 ,
+      weight :3 ,
       stateBoundaries : null,
       fillColor: "#e4ce7f",
       fillColorState: "#ff0000",
       icon: icon({
         iconUrl: "/geos/icon.png",
         iconSize: [16, 16],
-        iconAnchor: [0, 0]
+        iconAnchor: [19, 0]
       }),
     };
   },
@@ -111,6 +125,9 @@ export default {
     'zoom'
   ],
   methods: {
+    removeSideBar(sat){
+        this.active = sat;
+    },
     getRadius(radius){
       let fRadius = 0;
       if(radius > 50){
@@ -136,11 +153,13 @@ export default {
     },
     async initMap(){
       // this.states = await response1.json(); 
+      this.$vs.loading();
       const response = await fetch('https://raw.githubusercontent.com/davetaz/nigeria-map/gh-pages/data/processed/nigeria_regions.json');
       this.geojson = await response.json(); 
       this.getState();    
       this.allCases();         
-      this.getStats();         
+      this.getStats();  
+      this.$vs.loading.close();
     },
     async getState(){
       // this.states = await response1.json(); 
@@ -154,12 +173,15 @@ export default {
       let resultingArr = [];
       var i = 0;
       this.cases.data.map( async(res) =>{
-          let resp = await fetch(`https://geoserver.grid-nigeria.org/geoserver/GRIDMaster/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=GRIDMaster:sv_boundary_lgas&outputFormat=application%2Fjson&authkey=fdfe9a37-d2d0-4210-9a15-25dab5d907fa&CQL_FILTER=state_code=%27${res.code}%27`);
+        //   let resp = await fetch(`https://geoserver.grid-nigeria.org/geoserver/GRIDMaster/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=GRIDMaster:sv_boundary_lgas&outputFormat=application%2Fjson&authkey=fdfe9a37-d2d0-4210-9a15-25dab5d907fa&CQL_FILTER=state_code=%27${res.code}%27`);
+          let resp = await fetch(`
+                https://geoserver.grid-nigeria.org/geoserver/GRIDMaster/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=GRIDMaster:sv_boundary_states&outputFormat=application%2Fjson&authkey=fdfe9a37-d2d0-4210-9a15-25dab5d907fa&CQL_FILTER=state_code=%27${res.code}%27`);
           let jo = await resp.json(); 
           res.restpn = jo;
           var gfg = new Array(2); 
           gfg['id'] = res.id;
           gfg['bound'] = jo;
+          gfg['name'] = res.name;
           resultingArr.push(gfg);
           
       });
@@ -190,11 +212,11 @@ export default {
       const fillColor = this.fillColor; // important! need touch fillColor in computed for re-calculate when change fillColor
       return () => {
         return {
-          weight: 2,
+          weight: 1,
           color: "#ECEFF1",
           opacity: 1,
           fillColor: '#065535',
-          fillOpacity: 1
+          fillOpacity: 0.9
         };
       };
     },
@@ -202,11 +224,11 @@ export default {
       const fillColorState = this.fillColorState; // important! need touch fillColor in computed for re-calculate when change fillColor
       return () => {
         return {
-          weight: 2,
-          color: "#ff0000",
-          opacity: 1,
-          fillColor: '#ff0000',
-          fillOpacity: 1
+          weight: 1,
+          color: "#f0e586",
+          opacity: 0.5,
+          fillColor: '#f0e586',
+          fillOpacity: 0.5
         };
       };
     },

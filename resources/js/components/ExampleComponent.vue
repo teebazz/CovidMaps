@@ -196,6 +196,10 @@ export default {
 #mapx{
   height: 100vh;
 }
+#cs_color{
+  color: red;
+  font-weight: 900 ;
+}
 /* .fa-bars{
   font-size: 20px;
 } */

@@ -6,16 +6,17 @@
 
 require('./bootstrap');
 import router from './router';
-
-
+import {store} from './store'
 window.Vue = require('vue');
 import VueRouter from 'vue-router'
+import Vuex from 'vuex'
 import Vuesax from 'vuesax'
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 Vue.use(Vuesax, {
   // options here
 })
 Vue.use(VueRouter);
+Vue.use(Vuex);
 import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 Vue.component('l-map', LMap);
@@ -50,4 +51,5 @@ Vue.component('sidebar-component', require('./components/Sidebar.vue').default);
 const app = new Vue({
     el: '#app',
     router,
+    store : store,
 });

@@ -3,7 +3,7 @@
     <div class="card" style="padding:10px">    
         <div class="mainStats">      
             <div class="row" style="align-items: center;" v-if="!statsLoader">
-                <div class="col-lg-12 col-md-12 col-xs-12 col-xl-6 text-center" v-on:click="launchModal()">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-xl-6 text-center">
                 <div class="card m_block" v-bind:class="{ 'all_border': mode == 'all' }">
                     <strong class="c_number">{{stats.data.total_cases}}</strong>
                     <span class="c_title">Total Cases</span>
@@ -36,7 +36,7 @@
         <div class="sidebar sdHeight">   
         <div v-if="!stateLoader">    
             <div class="card" style="padding:5px;margin-top:5px;width:100%;" v-for="singleState in statesList.data" :key="singleState.id">
-            <div class="row" style="align-items: center;">
+            <div class="row" style="align-items: center;" @click="caseBreakdown(singleState)">
                 <div class="col-lg-3 col-md-3 col-sm-3">
                 <img :src="singleState.image" class="img-fluid imgClass">
                 </div>
@@ -54,6 +54,14 @@
         </div> 
         </div>
     </div>
+    <vs-popup class="holamundo"  :title="`${popup.title} Breakdown`" :active.sync="popupActivo">
+      <p>
+        <strong>Total Confirmed Case</strong> :  <span id="cs_color">{{popup.total_case}}</span> <br>
+        <strong>Total Active Case</strong> :  <span id="cs_color">{{popup.active_case}}</span> <br>
+        <strong>Isolation Centers : </strong> : <i>--No Data yet--</i> <br>
+        <strong>Emergency Numbers : </strong> : <i>--No Data yet--</i> <br>
+      </p>
+    </vs-popup>
 </div>
 </template>
 <script>
@@ -80,6 +88,7 @@ export default {
       center: [9.0820, 8.6753],
       caseLoader : true,
       active : false,
+      popupActivo : false,
       stateLoader : true,
       statsLoader : true,
       statesList: null,
@@ -89,12 +98,18 @@ export default {
       bounds: null,
       geojson: null,
       states: null,
+      popup : {
+        title : '',
+        total_case : '',
+        active_case : '',
+      }
     };
   },
   methods: {
-    async initMap(){
+    async initMap(){        
       this.getState();           
-      this.getStats();         
+      this.getStats();  
+       
     },
     async getState(){
       const response = await fetch('/api/states');
@@ -110,7 +125,15 @@ export default {
     },
     sideAction(action){
       this.active = action;      
+    },
+    caseBreakdown(singleState){
+        this.$emit('remove-sidebar',false);
+        this.popupActivo = true;
+        this.popup.title = singleState.name;
+        this.popup.total_case = singleState.total_case;
+        this.popup.active_case = singleState.active_cases;
     }
+    
   }
   ,
   created () {
