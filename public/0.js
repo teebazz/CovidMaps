@@ -142,6 +142,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -160,12 +170,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       zoom: 6.4,
       center: [9.0820, 8.6753],
+      caseLoader: true,
+      stateLoader: true,
+      statsLoader: true,
       statesList: null,
       mode: 'all',
+      stats: null,
       cases: null,
       bounds: null,
       geojson: null,
       states: null,
+      circleOpacity: 1,
+      circleFillOpacity: 0.6,
       stateBoundaries: null,
       fillColor: "#e4ce7f",
       fillColorState: "#ff0000",
@@ -177,6 +193,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
+    getRadius: function getRadius(radius) {
+      var fRadius = 0;
+
+      if (radius > 50) {
+        fRadius = 50000;
+      } else if (radius > 10 && radius < 50) {
+        fRadius = 30000;
+      } else {
+        fRadius = 10000;
+      }
+
+      return fRadius;
+    },
     zoomUpdated: function zoomUpdated(zoom) {
       this.zoom = zoom;
     },
@@ -213,7 +242,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this.allCases();
 
-              case 8:
+                _this.getStats();
+
+              case 9:
               case "end":
                 return _context.stop();
             }
@@ -240,7 +271,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 5:
                 _this2.statesList = _context2.sent;
-                console.log(_this2.statesList); // this.loadStatePoly();
+                _this2.stateLoader = false; // console.log(this.statesList);
+                // this.loadStatePoly();
 
               case 7:
               case "end":
@@ -272,7 +304,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   jo = _context3.sent;
                   res.restpn = jo;
                   gfg = new Array(2);
-                  gfg['id'] = i++;
+                  gfg['id'] = res.id;
                   gfg['bound'] = jo;
                   resultingArr.push(gfg);
 
@@ -288,8 +320,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           return _ref.apply(this, arguments);
         };
       }());
-      this.states = resultingArr;
-      console.log(resultingArr);
+      this.states = resultingArr; // console.log(resultingArr);
     },
     allCases: function allCases() {
       var _this3 = this;
@@ -310,15 +341,46 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 5:
                 _this3.cases = _context4.sent;
+                _this3.caseLoader = false;
 
                 _this3.loadStatePoly();
 
-              case 7:
+              case 8:
               case "end":
                 return _context4.stop();
             }
           }
         }, _callee4);
+      }))();
+    },
+    getStats: function getStats() {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return fetch('/api/stats');
+
+              case 2:
+                response = _context5.sent;
+                _context5.next = 5;
+                return response.json();
+
+              case 5:
+                _this4.stats = _context5.sent;
+                console.log(_this4.stats);
+                _this4.statsLoader = false;
+
+              case 8:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
       }))();
     }
   },
@@ -371,7 +433,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.sidebar[data-v-299e239e]{\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: center;\n  height: calc(100vh - 40vh);\n  overflow-x: hidden;\n  overflow-y: auto;\n  padding-top: 20px;\n}\n.imgClass[data-v-299e239e]{\n    width: 50%;\n    height: 50%;\n    -o-object-fit: scale-down;\n    object-fit: scale-down;\n}\n.numbers[data-v-299e239e]{\n  font-weight: 900;\n  font-size: 18px;\n  color:red;\n  /* text-align:left !important ; */\n}\n.c_title[data-v-299e239e]{\n  font-size: 10px;\n  font-weight: 600;\n}\n.c_number[data-v-299e239e]{\n  font-size: 25px;\n  font-weight: 700;\n}\n.m_block[data-v-299e239e]{\n  padding: 10px;\n  border-radius: 15px;\n  margin: 5px;\n}\n.sidT[data-v-299e239e]{\n  padding-left:5px ;\n  padding-right:5px ;\n}\n.all_border[data-v-299e239e]{\n  border: 1px solid red;\n}\n#mapx[data-v-299e239e]{\n  height: 100vh\n}\n", ""]);
+exports.push([module.i, "\n.sidebar[data-v-299e239e]{\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: center;\n  height: 100%;\n  max-height: 60vh;\n  overflow-x: hidden;\n  overflow-y: auto;\n  padding-top: 20px;\n}\n.imgClass[data-v-299e239e]{\n    width: 50%;\n    height: 50%;\n    -o-object-fit: scale-down;\n    object-fit: scale-down;\n}\n.numbers[data-v-299e239e]{\n  font-weight: 900;\n  font-size: 18px;\n  color:red;\n  /* text-align:left !important ; */\n}\n.c_title[data-v-299e239e]{\n  font-size: 10px;\n  font-weight: 600;\n}\n.c_number[data-v-299e239e]{\n  font-size: 25px;\n  font-weight: 700;\n}\n.m_block[data-v-299e239e]{\n  padding: 10px;\n  border-radius: 15px;\n  margin: 5px;\n}\n.sidT[data-v-299e239e]{\n  padding-left:5px ;\n  padding-right:5px ;\n}\n.all_border[data-v-299e239e]{\n  border: 1px solid red;\n}\n#mapx[data-v-299e239e]{\n  height: 100vh\n}\n", ""]);
 
 // exports
 
@@ -452,27 +514,33 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _vm._l(_vm.states, function(state) {
-                    return _c(
-                      "div",
-                      { key: state.id },
-                      [
-                        _c("l-geo-json", {
-                          attrs: {
-                            geojson: state.bound,
-                            "options-style": _vm.styleFunctionSatet
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  }),
-                  _vm._v(" "),
-                  _vm._l(_vm.cases.data, function(casx) {
-                    return _c("div", { key: casx.id })
-                  })
+                  !_vm.caseLoader
+                    ? _c(
+                        "div",
+                        _vm._l(_vm.cases.data, function(casx) {
+                          return _c(
+                            "div",
+                            { key: casx.name },
+                            [
+                              _c("l-circle", {
+                                attrs: {
+                                  "lat-lng": [casx.longitude, casx.latitude],
+                                  radius: _vm.getRadius(casx.total_case),
+                                  color: "red",
+                                  "fill-color": "#ff0000",
+                                  opacity: _vm.circleOpacity,
+                                  "fill-opacity": _vm.circleFillOpacity
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        }),
+                        0
+                      )
+                    : _vm._e()
                 ],
-                2
+                1
               )
             ],
             1
@@ -482,166 +550,154 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "col-md-2", staticStyle: { padding: "0" } }, [
         _c("div", { staticClass: "card", staticStyle: { padding: "10px" } }, [
-          _c(
-            "div",
-            { staticClass: "row", staticStyle: { "align-items": "center" } },
-            [
-              _c(
+          !_vm.statsLoader
+            ? _c(
                 "div",
                 {
-                  staticClass: "col-lg-6 col-md-12 col-xs-12 text-center",
-                  on: {
-                    click: function($event) {
-                      return _vm.launchModal()
-                    }
-                  }
+                  staticClass: "row",
+                  staticStyle: { "align-items": "center" }
                 },
                 [
                   _c(
                     "div",
                     {
-                      staticClass: "card m_block",
-                      class: { all_border: _vm.mode == "all" }
+                      staticClass: "col-lg-6 col-md-12 col-xs-12 text-center",
+                      on: {
+                        click: function($event) {
+                          return _vm.launchModal()
+                        }
+                      }
                     },
                     [
-                      _c("strong", { staticClass: "c_number" }, [_vm._v("61")]),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card m_block",
+                          class: { all_border: _vm.mode == "all" }
+                        },
+                        [
+                          _c("strong", { staticClass: "c_number" }, [
+                            _vm._v(_vm._s(_vm.stats.data.total_cases))
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "c_title" }, [
+                            _vm._v("Total Cases")
+                          ])
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-lg-6 col-xs-12 text-center" }, [
+                    _c("div", { staticClass: "card m_block" }, [
+                      _c("strong", { staticClass: "c_number" }, [
+                        _vm._v(_vm._s(_vm.stats.data.total_active_cases))
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "c_title" }, [_vm._v("Active")])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-lg-6 col-xs-12 text-center" }, [
+                    _c("div", { staticClass: "card m_block" }, [
+                      _c("strong", { staticClass: "c_number" }, [
+                        _vm._v(_vm._s(_vm.stats.data.total_deaths))
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "c_title" }, [_vm._v("Deaths")])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-lg-6 col-xs-12 text-center" }, [
+                    _c("div", { staticClass: "card m_block" }, [
+                      _c("strong", { staticClass: "c_number" }, [
+                        _vm._v(_vm._s(_vm.stats.data.total_recoveries))
+                      ]),
                       _vm._v(" "),
                       _c("span", { staticClass: "c_title" }, [
-                        _vm._v("Total Cases")
+                        _vm._v("Discharged")
                       ])
-                    ]
-                  )
+                    ])
+                  ])
                 ]
-              ),
-              _vm._v(" "),
-              _vm._m(0),
-              _vm._v(" "),
-              _vm._m(1),
-              _vm._v(" "),
-              _vm._m(2),
-              _vm._v(" "),
-              _vm._m(3),
-              _vm._v(" "),
-              _vm._m(4)
-            ]
-          ),
+              )
+            : _c("div", { staticStyle: { "align-items": "center" } }, [
+                _c("img", {
+                  staticClass: "img-fluid ",
+                  attrs: {
+                    src:
+                      "https://constructs.stampede-design.com/wp-content/uploads/2015/06/buffer-loading.gif"
+                  }
+                })
+              ]),
           _vm._v(" "),
           _c("hr"),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "sidebar" },
-            _vm._l(_vm.statesList.data, function(singleState) {
-              return _c(
-                "div",
-                {
-                  key: singleState.id,
-                  staticClass: "card",
-                  staticStyle: {
-                    padding: "5px",
-                    "margin-top": "5px",
-                    width: "100%"
-                  }
-                },
-                [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "row",
-                      staticStyle: { "align-items": "center" }
-                    },
-                    [
-                      _c("div", { staticClass: "col-md-3 " }, [
-                        _c("img", {
-                          staticClass: "img-fluid imgClass",
-                          attrs: { src: singleState.image }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-6 " }, [
-                        _c("h6", [_vm._v(_vm._s(singleState.name))])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-3 " }, [
-                        _c("h6", { staticClass: "numbers" }, [
-                          _vm._v(_vm._s(singleState.total_case))
-                        ])
-                      ])
-                    ]
-                  )
-                ]
-              )
-            }),
-            0
-          )
+          _c("div", { staticClass: "sidebar" }, [
+            !_vm.stateLoader
+              ? _c(
+                  "div",
+                  _vm._l(_vm.statesList.data, function(singleState) {
+                    return _c(
+                      "div",
+                      {
+                        key: singleState.id,
+                        staticClass: "card",
+                        staticStyle: {
+                          padding: "5px",
+                          "margin-top": "5px",
+                          width: "100%"
+                        }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "row",
+                            staticStyle: { "align-items": "center" }
+                          },
+                          [
+                            _c("div", { staticClass: "col-md-3 " }, [
+                              _c("img", {
+                                staticClass: "img-fluid imgClass",
+                                attrs: { src: singleState.image }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-6 " }, [
+                              _c("h6", [_vm._v(_vm._s(singleState.name))])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-3 " }, [
+                              _c("h6", { staticClass: "numbers" }, [
+                                _vm._v(_vm._s(singleState.total_case))
+                              ])
+                            ])
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _c("div", { staticStyle: { "align-items": "center" } }, [
+                  _c("img", {
+                    staticClass: "img-fluid ",
+                    attrs: {
+                      src:
+                        "https://constructs.stampede-design.com/wp-content/uploads/2015/06/buffer-loading.gif"
+                    }
+                  })
+                ])
+          ])
         ])
       ])
     ]),
     _vm._v(" "),
-    _vm._m(5)
+    _vm._m(0)
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-6 col-xs-12 text-center" }, [
-      _c("div", { staticClass: "card m_block" }, [
-        _c("strong", { staticClass: "c_number" }, [_vm._v("1")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "c_title" }, [_vm._v("Deaths")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-6 col-xs-12 text-center" }, [
-      _c("div", { staticClass: "card m_block" }, [
-        _c("strong", { staticClass: "c_number" }, [_vm._v("3")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "c_title" }, [_vm._v("Discharged")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-6 col-xs-12 text-center" }, [
-      _c("div", { staticClass: "card m_block" }, [
-        _c("strong", { staticClass: "c_number" }, [_vm._v("57")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "c_title" }, [_vm._v("Active")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-6 col-xs-12 text-center" }, [
-      _c("div", { staticClass: "card m_block" }, [
-        _c("strong", { staticClass: "c_number" }, [_vm._v("X")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "c_title" }, [_vm._v("Index Cases")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-6 col-xs-12 text-center" }, [
-      _c("div", { staticClass: "card m_block" }, [
-        _c("strong", { staticClass: "c_number" }, [_vm._v("X")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "c_title" }, [_vm._v("Contact Cases")])
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

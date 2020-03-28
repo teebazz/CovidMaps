@@ -26,4 +26,21 @@ class APIController extends Controller
             '000',$this->factorResponse->responseCode('000'),$states
         );
     }
+
+    public function stats(Request $request)
+    {
+        $states = State::orderBy('id','DESC');
+        if(!empty($request->state)){
+            $states->where(['id' => $request->state]);
+        }
+        $result = [
+            'total_cases' => $states->sum('total_case'),
+            'total_deaths' => $states->sum('deaths'),
+            'total_recoveries' => $states->sum('recoveries'),
+            'total_active_cases' => $states->sum('active_cases'),
+        ];
+        return $this->factorResponse->factorResponse(
+            '000',$this->factorResponse->responseCode('000'),$result
+        );
+    }
 }

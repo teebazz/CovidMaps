@@ -23,20 +23,22 @@
             @update:bounds="boundsUpdated"
             >
             <l-tile-layer :url="url"></l-tile-layer>
-            <l-geo-json :geojson="geojson" :options-style="styleFunction" ></l-geo-json>
-              <div v-for="state in states" v-bind:key="state.id">
-                <l-geo-json :geojson="state.bound" :options-style="styleFunctionSatet" ></l-geo-json>
-              </div>
-              <div v-for="casx in cases.data" v-bind:key="casx.id" >
-                <!-- <l-marker :lat-lng="[casx.longitude,casx.latitude]" :icon="icon">
-                  <l-popup>
-                    {{casx.name}}
-                  </l-popup>
-                </l-marker> -->
-                <!-- <l-circle
-                  :lat-lng="[casx.longitude,casx.latitude]"
-                  radius="45000" color='red' fill-color="#ff0000" opacity="1" fill-opacity="0.6"
-                /> -->
+            <l-geo-json :geojson="geojson" :options-style="styleFunction" ></l-geo-json>              
+              <div v-if="!caseLoader">
+                <!-- <div v-for="state in states" v-bind:key="state.id">
+                  <l-geo-json :geojson="state.bound" :options-style="styleFunctionSatet" ></l-geo-json>
+                </div> -->
+                <div v-for="casx in cases.data" v-bind:key="casx.name" >
+                  <!-- <l-marker :lat-lng="[casx.longitude,casx.latitude]" :icon="icon">
+                    <l-popup>
+                      {{casx.name}}
+                    </l-popup>
+                  </l-marker> -->
+                  <l-circle
+                    :lat-lng="[casx.longitude,casx.latitude]"
+                    :radius="getRadius(casx.total_case)" color='red' fill-color="#ff0000" :opacity="circleOpacity" :fill-opacity="circleFillOpacity"
+                  />
+                </div>
               </div>
             </l-map>
           </div>
@@ -44,32 +46,32 @@
       </div>
       <div class="col-md-2" style="padding:0">
         <div class="card" style="padding:10px">          
-            <div class="row" style="align-items: center;">
+            <div class="row" style="align-items: center;" v-if="!statsLoader">
               <div class="col-lg-6 col-md-12 col-xs-12 text-center" v-on:click="launchModal()">
                 <div class="card m_block" v-bind:class="{ 'all_border': mode == 'all' }">
-                  <strong class="c_number">61</strong>
+                  <strong class="c_number">{{stats.data.total_cases}}</strong>
                   <span class="c_title">Total Cases</span>
                 </div>
               </div>
               <div class="col-lg-6 col-xs-12 text-center">
                 <div class="card m_block">
-                  <strong class="c_number">1</strong>
+                  <strong class="c_number">{{stats.data.total_active_cases}}</strong>
+                  <span class="c_title">Active</span>
+                </div>
+              </div>
+              <div class="col-lg-6 col-xs-12 text-center">
+                <div class="card m_block">
+                  <strong class="c_number">{{stats.data.total_deaths}}</strong>
                   <span class="c_title">Deaths</span>
                 </div>
               </div>
               <div class="col-lg-6 col-xs-12 text-center">
                 <div class="card m_block">
-                  <strong class="c_number">3</strong>
+                  <strong class="c_number">{{stats.data.total_recoveries}}</strong>
                   <span class="c_title">Discharged</span>
                 </div>
               </div>
-              <div class="col-lg-6 col-xs-12 text-center">
-                <div class="card m_block">
-                  <strong class="c_number">57</strong>
-                  <span class="c_title">Active</span>
-                </div>
-              </div>
-              <div class="col-lg-6 col-xs-12 text-center">
+              <!-- <div class="col-lg-6 col-xs-12 text-center">
                 <div class="card m_block">
                   <strong class="c_number">X</strong>
                   <span class="c_title">Index Cases</span>
@@ -80,23 +82,31 @@
                   <strong class="c_number">X</strong>
                   <span class="c_title">Contact Cases</span>
                 </div>
-              </div>
-            </div>         
+              </div> -->
+            </div>   
+            <div v-else style="align-items: center;">
+              <img src="https://constructs.stampede-design.com/wp-content/uploads/2015/06/buffer-loading.gif" class="img-fluid ">
+            </div>      
           <hr>   
-          <div class="sidebar">       
-            <div class="card" style="padding:5px;margin-top:5px;width:100%;" v-for="singleState in statesList.data" :key="singleState.id">
-              <div class="row" style="align-items: center;">
-                <div class="col-md-3 ">
-                  <img :src="singleState.image" class="img-fluid imgClass">
-                </div>
-                <div class="col-md-6 ">
-                  <h6>{{singleState.name}}</h6>
-                </div>
-                <div class="col-md-3 ">
-                  <h6 class="numbers">{{singleState.total_case}}</h6>
+          <div class="sidebar">   
+            <div v-if="!stateLoader">    
+              <div class="card" style="padding:5px;margin-top:5px;width:100%;" v-for="singleState in statesList.data" :key="singleState.id">
+                <div class="row" style="align-items: center;">
+                  <div class="col-md-3 ">
+                    <img :src="singleState.image" class="img-fluid imgClass">
+                  </div>
+                  <div class="col-md-6 ">
+                    <h6>{{singleState.name}}</h6>
+                  </div>
+                  <div class="col-md-3 ">
+                    <h6 class="numbers">{{singleState.total_case}}</h6>
+                  </div>
                 </div>
               </div>
             </div>
+            <div v-else style="align-items: center;">
+              <img src="https://constructs.stampede-design.com/wp-content/uploads/2015/06/buffer-loading.gif" class="img-fluid ">
+            </div> 
           </div>
         </div>
       </div>
@@ -139,12 +149,18 @@ export default {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       zoom: 6.4,
       center: [9.0820, 8.6753],
+      caseLoader : true,
+      stateLoader : true,
+      statsLoader : true,
       statesList: null,
       mode: 'all',
+      stats : null,
       cases : null,
       bounds: null,
       geojson: null,
       states: null,
+      circleOpacity : 1 ,
+      circleFillOpacity : 0.6 ,
       stateBoundaries : null,
       fillColor: "#e4ce7f",
       fillColorState: "#ff0000",
@@ -156,6 +172,17 @@ export default {
     };
   },
   methods: {
+    getRadius(radius){
+      let fRadius = 0;
+      if(radius > 50){
+        fRadius = 50000;
+      }else if(radius > 10 && radius < 50){
+        fRadius = 30000;
+      }else{
+        fRadius =  10000;
+      }
+      return fRadius;
+    },
     zoomUpdated(zoom) {
       this.zoom = zoom;
     },
@@ -173,13 +200,15 @@ export default {
       const response = await fetch('https://raw.githubusercontent.com/davetaz/nigeria-map/gh-pages/data/processed/nigeria_regions.json');
       this.geojson = await response.json(); 
       this.getState();    
-    this.allCases();         
+      this.allCases();         
+      this.getStats();         
     },
     async getState(){
       // this.states = await response1.json(); 
       const response = await fetch('/api/states');
       this.statesList = await response.json();
-      console.log(this.statesList);
+      this.stateLoader = false;
+      // console.log(this.statesList);
       // this.loadStatePoly();
     },
     loadStatePoly(){
@@ -190,18 +219,26 @@ export default {
           let jo = await resp.json(); 
           res.restpn = jo;
           var gfg = new Array(2); 
-          gfg['id'] = i++;
+          gfg['id'] = res.id;
           gfg['bound'] = jo;
           resultingArr.push(gfg);
           
       });
       this.states = resultingArr;
-      console.log(resultingArr);
+      // console.log(resultingArr);
     },
     async allCases(){
       const response = await fetch('/api/active-cases');
       this.cases = await response.json();
+      this.caseLoader = false;
       this.loadStatePoly();
+    },
+    async getStats(){
+      const response = await fetch('/api/stats');
+      this.stats = await response.json();
+      console.log(this.stats);
+      
+      this.statsLoader = false;
     }
   }
   ,
@@ -246,7 +283,8 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: calc(100vh - 40vh);
+  height: 100%;
+  max-height: 60vh;
   overflow-x: hidden;
   overflow-y: auto;
   padding-top: 20px;

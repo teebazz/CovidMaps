@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('states','APIController@getStates');
 Route::get('active-cases','APIController@activeCases');
+Route::get('stats','APIController@stats');
