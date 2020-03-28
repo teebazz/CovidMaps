@@ -1,61 +1,68 @@
 <template>
-  <div style="height:100vh;">
-    <l-map
-        style="height: 100%; width: 100%"
-        :zoom="zoom"
-        :center="center"
-        :options="{zoomControl: false}"
-        >
-        <l-control position="topleft" >
-            <!-- <i class="fa fa-bars"  > </i> -->            
-            <div class="statShow">
-                <div class="row" style="align-items: center;margin-top:30px" v-if="!statsLoader">
-                    <div class="text-center" v-on:click="launchModal()">
-                        <div class="card m_block" v-bind:class="{ 'all_border': mode == 'all' }">
-                            <strong class="c_number">81</strong>
-                            <span class="c_title">Total Cases</span>
+  <div>
+    <div style="height:100vh;">
+        <l-map
+            style="height: 100%; width: 100%"
+            :zoom="zoom"
+            :center="center"
+            :options="{zoomControl: false}"
+            >
+            <l-control position="topleft" >
+                <!-- <i class="fa fa-bars"  > </i> -->            
+                <div class="statShow">
+                    <div class="row" style="align-items: center;margin-top:30px" v-if="!statsLoader">
+                        <div class="text-center" v-on:click="launchModal()">
+                            <div class="card m_block" v-bind:class="{ 'all_border': mode == 'all' }">
+                                <strong class="c_number">81</strong>
+                                <span class="c_title">Total Cases</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="text-center">
-                        <div class="card m_block">
-                            <strong class="c_number">6</strong>
-                            <span class="c_title">Active</span>
+                        <div class="text-center">
+                            <div class="card m_block">
+                                <strong class="c_number">6</strong>
+                                <span class="c_title">Active</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="text-center">
-                        <div class="card m_block">
-                            <strong class="c_number">6</strong>
-                            <span class="c_title">Deaths</span>
+                        <div class="text-center">
+                            <div class="card m_block">
+                                <strong class="c_number">6</strong>
+                                <span class="c_title">Deaths</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="text-center">
-                        <div class="card m_block">
-                            <strong class="c_number">1</strong>
-                            <span class="c_title">Discharged</span>
+                        <div class="text-center">
+                            <div class="card m_block">
+                                <strong class="c_number">1</strong>
+                                <span class="c_title">Discharged</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </l-control>
+            <l-control position="topright" >
+                <button class="btn btn-sm btn-miner btn-success"  @click="active=!active" style="font-size:12px;"> <i class="fa fa-bars"> </i>Stats By States</button>
+            </l-control>
+            <l-control-zoom position="bottomright"  ></l-control-zoom>
+            <l-tile-layer :url="url"></l-tile-layer>
+            <l-geo-json :geojson="geojson" :options-style="styleFunction" ></l-geo-json>              
+            <div v-if="!caseLoader">
+                <!-- <div v-for="state in states" v-bind:key="state.id">
+                <l-geo-json :geojson="state.bound" :options-style="styleFunctionSatet" ></l-geo-json>
+                </div> -->
+                <div v-for="casx in cases.data" v-bind:key="casx.name" >
+                <l-circle
+                    :lat-lng="[casx.longitude,casx.latitude]"
+                    :radius="getRadius(casx.total_case)" color='red' fill-color="#ff0000" :opacity="circleOpacity" :fill-opacity="circleFillOpacity"
+                />
+                </div>
             </div>
-        </l-control>
-         <l-control position="topright" >
-             <button class="btn btn-sm btn-miner btn-success" @click="$emit('side-bar',!active)" style="font-size:12px;"> <i class="fa fa-bars"  @click="$emit('side-bar',!active)"> </i>Stats By States</button>
-         </l-control>
-        <l-control-zoom position="bottomright"  ></l-control-zoom>
-        <l-tile-layer :url="url"></l-tile-layer>
-        <l-geo-json :geojson="geojson" :options-style="styleFunction" ></l-geo-json>              
-        <div v-if="!caseLoader">
-            <!-- <div v-for="state in states" v-bind:key="state.id">
-            <l-geo-json :geojson="state.bound" :options-style="styleFunctionSatet" ></l-geo-json>
-            </div> -->
-            <div v-for="casx in cases.data" v-bind:key="casx.name" >
-            <l-circle
-                :lat-lng="[casx.longitude,casx.latitude]"
-                :radius="getRadius(casx.total_case)" color='red' fill-color="#ff0000" :opacity="circleOpacity" :fill-opacity="circleFillOpacity"
-            />
-            </div>
-        </div>
-    </l-map>
+        </l-map>     
     </div>
+    <vs-sidebar parent="body" default-index="1"  color="primary" class="sidebarx"  spacer v-model="active">
+       <div style="padding:0">
+        <sidebar-component></sidebar-component>
+      </div>
+     </vs-sidebar>
+  </div>
 </template>
 <script>
 import { LMap, LTileLayer ,LGeoJson,  LMarker, LPopup,LIcon,LCircle,LControlZoom, LControl} from "vue2-leaflet";
@@ -81,6 +88,7 @@ export default {
       stateLoader : true,
       statsLoader : true,
       statesList: null,
+      active : false,
       mode: 'all',
       stats : null,
       cases : null,
@@ -100,7 +108,7 @@ export default {
     };
   },
   props: [
-    'zoom','active'
+    'zoom'
   ],
   methods: {
     getRadius(radius){

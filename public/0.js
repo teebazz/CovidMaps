@@ -61,20 +61,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
 function getDefaultData() {
   return {
     zoom: 6.4,
-    mobileZoom: 5,
-    active: false
+    mobileZoom: 5 // active : false,
+
   };
 }
 
@@ -186,87 +180,44 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container-fluid" },
-    [
-      _c("div", { staticClass: "row" }, [
-        _c(
-          "div",
-          { staticClass: "col-md-12 col-xl-10", staticStyle: { padding: "0" } },
-          [
-            _c("div", { staticClass: "card" }, [
-              _c(
-                "div",
-                { staticClass: "mapWeb", attrs: { id: "mapx" } },
-                [
-                  _c("map-component", {
-                    attrs: { zoom: _vm.zoom, active: _vm.active },
-                    on: { "side-bar": _vm.sideAction }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "mapMobile", attrs: { id: "mapx" } },
-                [
-                  _c("map-component", {
-                    attrs: { zoom: _vm.mobileZoom, active: _vm.active },
-                    on: { "side-bar": _vm.sideAction }
-                  })
-                ],
-                1
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "col-md-3 col-xl-2 mapWeb",
-            staticStyle: { padding: "0" },
-            attrs: { id: "main-sidebar" }
-          },
-          [_c("sidebar-component")],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _vm._m(0),
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        { staticClass: "col-md-12 col-xl-10", staticStyle: { padding: "0" } },
+        [
+          _c("div", { staticClass: "card" }, [
+            _c(
+              "div",
+              { staticClass: "mapWeb", attrs: { id: "mapx" } },
+              [_c("map-component", { attrs: { zoom: _vm.zoom } })],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "mapMobile", attrs: { id: "mapx" } },
+              [_c("map-component", { attrs: { zoom: _vm.mobileZoom } })],
+              1
+            )
+          ])
+        ]
+      ),
       _vm._v(" "),
       _c(
-        "vs-sidebar",
+        "div",
         {
-          staticClass: "sidebarx",
-          attrs: {
-            parent: "body",
-            "default-index": "1",
-            color: "primary",
-            spacer: ""
-          },
-          model: {
-            value: _vm.active,
-            callback: function($$v) {
-              _vm.active = $$v
-            },
-            expression: "active"
-          }
+          staticClass: "col-md-3 col-xl-2 mapWeb",
+          staticStyle: { padding: "0" },
+          attrs: { id: "main-sidebar" }
         },
-        [
-          _c(
-            "div",
-            { staticStyle: { padding: "0" } },
-            [_c("sidebar-component")],
-            1
-          )
-        ]
+        [_c("sidebar-component")],
+        1
       )
-    ],
-    1
-  )
+    ]),
+    _vm._v(" "),
+    _vm._m(0)
+  ])
 }
 var staticRenderFns = [
   function() {

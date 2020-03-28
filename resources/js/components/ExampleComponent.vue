@@ -9,10 +9,10 @@
       <div class="col-md-12 col-xl-10" style="padding:0">
         <div class="card">
           <div id="mapx" class="mapWeb">
-            <map-component :zoom="zoom" v-on:side-bar="sideAction" :active="active" ></map-component>
+            <map-component :zoom="zoom"></map-component>
           </div>
           <div class="mapMobile" id="mapx" > 
-            <map-component :zoom="mobileZoom" v-on:side-bar="sideAction" :active="active"></map-component>
+            <map-component :zoom="mobileZoom"></map-component>
           </div>
         </div>
       </div>
@@ -37,12 +37,6 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div>
-     <vs-sidebar parent="body" default-index="1"  color="primary" class="sidebarx"  spacer v-model="active">
-       <div style="padding:0">
-         <!-- <button class="btn btn-sm" @click="closeMenu()"><i class="fa fa-close"></i> Close</button> -->
-        <sidebar-component></sidebar-component>
-      </div>
-     </vs-sidebar>
   </div>
 </template>
 <script>
@@ -52,7 +46,7 @@ function getDefaultData() {
     return {
       zoom: 6.4,
       mobileZoom: 5,
-      active : false,
+      // active : false,
     }
 }
 export default {
